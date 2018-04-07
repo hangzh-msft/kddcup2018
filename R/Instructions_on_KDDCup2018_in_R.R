@@ -55,10 +55,18 @@ api_names <- c("airquality", "meteorology")
 
 for (city in cities){
   for (api in api_names){
-    output_file <- paste(city, "_", api, "_", start_time, "_", end_time, ".csv", sep="")
-    result <- get_data_from_api(base_url, api, city, start_time, end_time, data_token, output_file)
-    if (result == -1){
-      print(paste("Failed to get ", api, " data for city ", city, " between ", start_time, " and ", end_time, sep=""))
+    if (api == "meteorology"){
+      city_1 <- paste(city, "_grid", sep="")
+    } else{
+      city_1 <- city
+      
+    }
+    output_file <- paste(city_1, "_", api, "_", start_time, "_", end_time, ".csv", sep="")
+    result <- get_data_from_api(base_url, api, city_1, start_time, end_time, data_token, output_file)
+    # If it is Beijing, there is a third dataset available
+    if (city == 'bj' & api == 'meteorology'){
+      output_file <- paste(city, "_", api, "_", start_time, "_", end_time, ".csv", sep="")
+      result <- get_data_from_api(base_url, api, city, start_time, end_time, data_token, output_file)
     }
   }
 }
